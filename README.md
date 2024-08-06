@@ -1,36 +1,16 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Forms & Actions
 
-## Getting Started
+- 오늘의 강의: 캐럿마켓 클론코딩: From #4.0 to #5.4
+- 오늘의 과제: 위의 강의를 시청하신 후, 아래 코드 챌린지를 제출하면 됩니다.
+- 제출기간: 2일 챌린지! 48시간. 수요일 오전 6시까지.
 
-First, run the development server:
+## 챌린지 목표:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Tailwind, Server Actions, useFormStatus, 그리고 useFormState 를 활용하여 아래를 빌드하세요: ![예시 영상](https://github.com/user-attachments/assets/18432bd9-9487-462f-966a-7a831b05ca26)
+- 유저의 비밀번호가 '12345' 라면, 성공 메시지를 보여야 하고 아닐 경우 에러 메시지를 보여야 합니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 제출방법
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 새로운 Next JS 프로젝트를 여러분 컴퓨터에 생성하세요.
+- 이 과제의 코드를 GitHub 리포지토리에 푸시하고 변경 사항이 포함된 커밋 링크를 제출하세요.
+- 제출기간: 2일 챌린지! 48시간. 수요일 오전 6시까지.
