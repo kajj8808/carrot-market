@@ -6,7 +6,7 @@ interface FormInputProps {
   placeholder: string;
   icon: React.ReactNode;
   required: boolean;
-  error?: string;
+  errors?: string[];
 }
 
 export default function FormInput({
@@ -15,14 +15,14 @@ export default function FormInput({
   placeholder,
   icon,
   required,
-  error,
+  errors = [],
 }: FormInputProps) {
   return (
     <div className="flex w-full flex-col gap-2">
       <div
         className={[
           "group flex items-center gap-2.5 rounded-full border-2 px-5 py-3 ring-offset-2 transition *:fill-neutral-600 *:font-medium focus-within:ring-1",
-          error
+          errors.length >= 1
             ? "border-red-400 ring-red-500"
             : "border-neutral-300 ring-neutral-400",
         ].join(" ")}
@@ -36,7 +36,12 @@ export default function FormInput({
           className="w-full placeholder:font-medium placeholder:text-neutral-300 focus:outline-none"
         />
       </div>
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {errors &&
+        errors.map((error) => (
+          <p className="text-xs text-red-500" key={error}>
+            {error}
+          </p>
+        ))}
     </div>
   );
 }

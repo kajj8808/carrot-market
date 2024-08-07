@@ -2,14 +2,14 @@
 import FormInput from "@/components/form-input";
 import { FaFire, FaKey, FaUser } from "react-icons/fa";
 import { MdEmail, MdPropane } from "react-icons/md";
-import handleForm from "./actions";
+import logIn from "./actions";
 import FormButton from "@/components/form-btn";
 import { useFormState } from "react-dom";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
 export default function Home() {
-  const [state, trigger] = useFormState(handleForm, null);
-  console.log(state);
+  const [state, trigger] = useFormState(logIn, null);
+
   return (
     <div className="flex h-dvh w-full items-center justify-center">
       <form
@@ -26,6 +26,7 @@ export default function Home() {
             placeholder="Email"
             icon={<MdEmail className="size-4" />}
             required
+            errors={state?.erros?.fieldErrors.email}
           />
           <FormInput
             name="username"
@@ -33,6 +34,7 @@ export default function Home() {
             placeholder="Username"
             icon={<FaUser className="size-4" />}
             required
+            errors={state?.erros?.fieldErrors.username}
           />
           <FormInput
             name="password"
@@ -40,7 +42,7 @@ export default function Home() {
             placeholder="Password"
             icon={<FaKey className="size-4" />}
             required
-            error={state?.error}
+            errors={state?.erros?.fieldErrors.password}
           />
         </div>
         <FormButton />
