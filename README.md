@@ -1,6 +1,6 @@
-# Zexy Zod
+# Prisma 💎
 
-- 오늘의 강의: 캐럿마켓 클론코딩: From #6.0 to #6.9
+- 오늘의 강의: 캐럿마켓 클론코딩: From #7.0 to #7.6
 - 오늘의 과제: 위의 강의를 시청하신 후, 아래 코드 챌린지를 제출하면 됩니다.
 - 제출기간: 익일 오전 6시까지.
 
@@ -8,15 +8,11 @@
 
 지난 섹션에서 생성한 같은 프로젝트를 활용하여 진행합니다:
 
-- Zod 를 활용하여 server action의 form 을 검증하세요.
-- 검증이 성공적이면 성공 메시지를 아닐 경우 에러를 유저에게 표기하세요.
-- 아래는 검증 제약 조건입니다:
-
-  - 오직 "@zod.com" 이메일만 허용 된다.
-  - 유저명은 5 글자 이상이어야 한다.
-  - 비밀번호는 10 글자 이상이어야 하며, 반드시 1개 이상의 숫자를 포함해야 한다.
-
-![예시 영상](https://github.com/user-attachments/assets/2ba04180-c3e3-4bc6-a94a-4893de270b6f)
+- SQLite로 프리즈마를 초기화하고 유저, 트윗, 좋아요 모델을 생성합니다.
+- User 모델에는 username, password, email, bio, created_at updated_at 필드가 있어야 합니다.
+- Tweet 모델에는 tweet, created_at 및 updated_at 필드가 있어야 합니다. 또한 User 와의 관계가 있어야 합니다.
+- Like 모델에는 created_at 필드가 있어야 하며 User 및 Tweet과의 관계가 있어야 합니다.
+- 모든 모델에는 primary key 가 있어야 합니다.
 
 ## 제출방법
 
