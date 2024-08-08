@@ -1,11 +1,33 @@
 "use server";
+import {
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_REGEX,
+  PASSWORD_REGEX_ERROR,
+} from "@/lib/constants";
+import { z } from "zod";
+
+// action이 서버에서만 실행되도록 만들어줌.
+
+const formSchema = z.object({
+  email: z.string().email().toLowerCase(),
+  password: z
+    .string({
+      required_error: "Password is required.",
+    })
+    .min(PASSWORD_MIN_LENGTH)
+    .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
+});
 
 // server action
-export default async function handleForm(prevState: any, formData: FormData) {
-  console.log(prevState);
-  ("use server"); // 이 함수가 서버에서만 실행되도록 만들어줌.
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return {
-    errors: ["wrong password", "password too short "],
+export default async function login(prevState: any, formData: FormData) {
+  const data = {
+    email: formData.get("email"),
+    password: formData.get("password"),
   };
+  const result = formSchema.safeParse(data);
+  if (!result.success) {
+    return result.error.flatten();
+  } else {
+    console.log(result.data);
+  }
 }
