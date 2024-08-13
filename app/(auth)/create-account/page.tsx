@@ -1,15 +1,14 @@
 "use client";
-import FormInput from "@/components/form-input";
-import { FaFire, FaKey, FaUser } from "react-icons/fa";
-import { MdEmail, MdPropane } from "react-icons/md";
-import logIn from "./actions";
-import FormButton from "@/components/form-btn";
 import { useFormState } from "react-dom";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-import FormLogo from "@/components/form-logo";
+import { createAccount } from "./actions";
+import FormInput from "@/components/form-input";
+import { MdEmail } from "react-icons/md";
+import { FaKey, FaUser } from "react-icons/fa";
+import FormButton from "@/components/form-btn";
+import MainLogo from "@/components/main-logo";
 
-export default function Home() {
-  const [state, trigger] = useFormState(logIn, null);
+export default function CreateAccountPage() {
+  const [state, trigger] = useFormState(createAccount, null);
 
   return (
     <div className="flex h-dvh w-full items-center justify-center">
@@ -17,7 +16,7 @@ export default function Home() {
         action={trigger}
         className="flex w-full max-w-lg flex-col items-center gap-3.5"
       >
-        <FormLogo />
+        <MainLogo />
         <div className="mt-6 flex w-full flex-col gap-3.5">
           <FormInput
             name="email"
@@ -25,7 +24,7 @@ export default function Home() {
             placeholder="Email"
             icon={<MdEmail className="size-4" />}
             required
-            errors={state?.erros?.fieldErrors.email}
+            errors={state?.fieldErrors.email}
           />
           <FormInput
             name="username"
@@ -33,7 +32,7 @@ export default function Home() {
             placeholder="Username"
             icon={<FaUser className="size-4" />}
             required
-            errors={state?.erros?.fieldErrors.username}
+            errors={state?.fieldErrors.username}
           />
           <FormInput
             name="password"
@@ -41,16 +40,10 @@ export default function Home() {
             placeholder="Password"
             icon={<FaKey className="size-4" />}
             required
-            errors={state?.erros?.fieldErrors.password}
+            errors={state?.fieldErrors.password}
           />
         </div>
-        <FormButton />
-        {state?.ok && (
-          <div className="flex w-full gap-4 rounded-2xl bg-green-500 p-4">
-            <IoIosCheckmarkCircleOutline className="size-6" />
-            <p className="font-bold">Welcome back!</p>
-          </div>
-        )}
+        <FormButton text="Create Account" />
       </form>
     </div>
   );

@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.5",
     "@prisma/client": "^5.18.0",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
+    "heroicons": "^2.1.5",
     "iron-session": "^8.0.2",
     "next": "14.2.5",
     "prisma": "^5.18.0",

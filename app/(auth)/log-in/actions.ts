@@ -57,7 +57,7 @@ export default async function logIn(prevState: any, formData: FormData) {
       const session = await getSession();
       session.id = user?.id!;
       await session.save();
-      return redirect("/profile");
+      return redirect("/");
     } else {
       return {
         fieldErrors: {
