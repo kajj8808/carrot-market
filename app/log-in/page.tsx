@@ -23,7 +23,7 @@ export default function LoginPage() {
             placeholder="Email"
             icon={<MdEmail className="size-4" />}
             required
-            //errors={state?.erros?.fieldErrors.email}
+            errors={state?.fieldErrors?.email}
           />
           <FormInput
             name="password"
@@ -31,7 +31,7 @@ export default function LoginPage() {
             placeholder="Password"
             icon={<FaKey className="size-4" />}
             required
-            // errors={state?.erros?.fieldErrors.password}
+            errors={state?.fieldErrors?.password}
           />
         </div>
         <FormButton text="Log in" />

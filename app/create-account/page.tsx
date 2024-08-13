@@ -43,7 +43,7 @@ export default function CreateAccountPage() {
             errors={state?.fieldErrors.password}
           />
         </div>
-        <FormButton text="Create Account?" />
+        <FormButton text="Create Account" />
       </form>
     </div>
   );
