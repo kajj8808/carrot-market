@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import AddTweet from "./add-tweet";
 
 export default function TweetList({
   initialTweets,
@@ -53,7 +54,7 @@ export default function TweetList({
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="flex h-[83dvh] flex-col gap-2 overflow-auto">
+      <div className="flex h-[73dvh] flex-col gap-2 overflow-auto">
         {tweets.map((tweet) => (
           <Link
             href={`tweets/${tweet.id}`}
