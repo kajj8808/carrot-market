@@ -3,6 +3,7 @@ import db from "@/lib/db";
 import getSession from "@/lib/sessions";
 import { sleep } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { notFound } from "next/navigation";
 import { resolve } from "path";
 
@@ -21,32 +22,6 @@ export async function getTweet(tweetId: number, userId: number) {
           username: true,
         },
       },
-      responses: {
-        select: {
-          id: true,
-          text: true,
-          created_at: true,
-          user: {
-            select: {
-              id: true,
-              username: true,
-            },
-          },
-        },
-        orderBy: {
-          updated_at: "desc",
-        },
-      },
-      likes: {
-        where: {
-          userId: userId,
-        },
-      },
-      _count: {
-        select: {
-          likes: true,
-        },
-      },
     },
   });
   if (!tweet) {
@@ -54,13 +29,57 @@ export async function getTweet(tweetId: number, userId: number) {
   }
   return tweet;
 }
-type TweetResult = Prisma.PromiseReturnType<typeof getTweet>;
-export type TweetResponse = TweetResult["responses"][0];
+
+export async function getLikeStatus(tweetId: number, userId: number) {
+  const isLiked = await db.like.findUnique({
+    where: {
+      id: {
+        tweetId,
+        userId,
+      },
+    },
+  });
+  const likeCount = await db.like.count({
+    where: {
+      tweetId,
+    },
+  });
+  return {
+    likeCount,
+    isLiked: Boolean(isLiked),
+  };
+}
+
+export async function getTweetResponses(tweetId: number) {
+  const tweetResponses = await db.response.findMany({
+    where: {
+      tweetId,
+    },
+    orderBy: {
+      updated_at: "desc",
+    },
+    select: {
+      id: true,
+      text: true,
+      user: {
+        select: {
+          username: true,
+        },
+      },
+      created_at: true,
+    },
+  });
+  return tweetResponses;
+}
+export type TweetResponse = Prisma.PromiseReturnType<
+  typeof getTweetResponses
+>[0];
+// type TweetResult = Prisma.PromiseReturnType<typeof getTweet>;
+// export type TweetResponse = TweetResult["responses"][0];
 
 export async function addResponse(tweetId: number, responseText: string) {
-  await sleep(3);
   const session = await getSession();
-  const newResponse = await db.response.create({
+  await db.response.create({
     data: {
       text: responseText,
       tweetId,
@@ -70,10 +89,7 @@ export async function addResponse(tweetId: number, responseText: string) {
       id: true,
     },
   });
-  if (!newResponse) {
-    return notFound();
-  }
-  return newResponse;
+  revalidatePath(`/tweets/${tweetId}`);
 }
 
 export async function likeTweet(tweetId: number) {
@@ -86,6 +102,7 @@ export async function likeTweet(tweetId: number) {
         userId: session.id,
       },
     });
+    revalidateTag("like-status");
   } catch (error) {}
 }
 export async function disLikeTweet(tweetId: number) {
@@ -98,5 +115,6 @@ export async function disLikeTweet(tweetId: number) {
         id: { tweetId, userId: session.id },
       },
     });
+    revalidateTag("like-status");
   } catch (error) {}
 }

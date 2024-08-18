@@ -1,9 +1,11 @@
 "use server";
 import { TWEETS_PER_PAGE } from "@/lib/constants";
 import db from "@/lib/db";
+import getSession from "@/lib/sessions";
 import { Prisma } from "@prisma/client";
 
 export default async function getTweets(page: number) {
+  const session = await getSession();
   const tweets = await db.tweet.findMany({
     include: {
       user: {
@@ -14,6 +16,11 @@ export default async function getTweets(page: number) {
       _count: {
         select: {
           likes: true,
+        },
+      },
+      likes: {
+        where: {
+          userId: session.id,
         },
       },
     },

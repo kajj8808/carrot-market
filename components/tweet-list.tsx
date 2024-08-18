@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AddTweet from "./add-tweet";
+import LikeButton from "./like-button";
 
 export default function TweetList({
   initialTweets,
@@ -69,12 +70,14 @@ export default function TweetList({
               </p>
             </div>
             <span className="line-clamp-2 h-14 text-sm">{tweet.tweet}</span>
-            <div className="flex items-center gap-1">
-              <div className="size-4">
-                <HeartIcon />
-              </div>
-              <p className="text-sm">{tweet._count.likes}</p>
-            </div>
+
+            <LikeButton
+              isLiked={tweet.likes.length > 0}
+              likeCount={tweet._count.likes}
+              tweetId={tweet.id}
+              small
+              disabled
+            />
           </Link>
         ))}
       </div>

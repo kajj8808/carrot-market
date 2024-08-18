@@ -1,21 +1,25 @@
 "use client";
 
 import { disLikeTweet, likeTweet } from "@/app/(tabs)/tweets/[id]/actions";
-import { HeartIcon } from "@heroicons/react/24/outline";
-import { useOptimistic } from "react";
+import { HeartIcon } from "@heroicons/react/24/solid";
+import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
+
+import { startTransition, useOptimistic } from "react";
 
 interface LikeButtonProps {
   isLiked: boolean;
   likeCount: number;
   tweetId: number;
-  revalidateFn: (id: number) => Promise<void>;
+  small?: boolean;
+  disabled?: boolean;
 }
 
 export default function LikeButton({
   isLiked,
   likeCount,
   tweetId,
-  revalidateFn,
+  small,
+  disabled,
 }: LikeButtonProps) {
   const [state, reducer] = useOptimistic(
     { isLiked, likeCount },
@@ -28,26 +32,27 @@ export default function LikeButton({
       };
     },
   );
-
   async function onClick() {
-    reducer(undefined);
+    startTransition(() => {
+      reducer(undefined);
+    });
+
     if (isLiked) {
       await disLikeTweet(tweetId);
     } else {
       await likeTweet(tweetId);
     }
-    revalidateFn(tweetId);
   }
-
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
-      className="flex items-center gap-px *:text-neutral-600"
+      className={`flex items-center gap-1 *:transition-colors *:hover:text-red-500 disabled:-z-10 ${isLiked ? "*:text-red-500" : "*:text-neutral-500 *:hover:text-neutral-500"} disabled:cursor-default`}
     >
-      <div className="size-6">
-        <HeartIcon />
+      <div className={small ? "size-4" : "size-5"}>
+        {isLiked ? <HeartIcon /> : <OutlineHeartIcon />}
       </div>
-      <span>{state.likeCount}</span>
+      <span className="text-sm">{state.likeCount}</span>
     </button>
   );
 }

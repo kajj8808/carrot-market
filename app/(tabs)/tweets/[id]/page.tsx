@@ -1,13 +1,19 @@
 import { formatKorTime } from "@/lib/utils";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { notFound } from "next/navigation";
-import { getTweet } from "./actions";
+import { getTweetResponses, getTweet, getLikeStatus } from "./actions";
 import ResponseForm from "@/components/response-form";
 import getSession from "@/lib/sessions";
 import { unstable_cache as nextCache, revalidatePath } from "next/cache";
 import LikeButton from "@/components/like-button";
 
 const getCachedTweet = nextCache(getTweet, ["tweet-detail"]);
+const getCachedTweetResponses = nextCache(getTweetResponses, [
+  "tweet-response",
+]);
+const getCachedLikeStatus = nextCache(getLikeStatus, ["tweet-like"], {
+  tags: ["like-status"],
+});
 
 export default async function TweetDetail({
   params,
@@ -18,16 +24,13 @@ export default async function TweetDetail({
   if (isNaN(id)) {
     return notFound();
   }
-  // 더 좋은 생각나면 바꾸기
+
   const session = await getSession();
   const tweet = await getCachedTweet(id, session.id);
-
-  const revalidate = async (tweetId: number) => {
-    "use server";
-    revalidatePath(`/tweets/${tweetId}`);
-  };
+  const responses = await getCachedTweetResponses(id);
+  const likeStatus = await getCachedLikeStatus(id, session.id);
   return (
-    <div className="flex h-[83dvh] w-full flex-col gap-2 rounded-md border p-5">
+    <div className="flex h-[93dvh] w-full flex-col gap-2 overflow-auto rounded-md border p-5">
       <div className="flex items-center gap-1">
         <p className="font-medium">{tweet.user.username}</p>
       </div>
@@ -36,20 +39,17 @@ export default async function TweetDetail({
         {formatKorTime(tweet.created_at.toString())}
       </p>
       <div className="mt-4 flex border-b border-t py-4">
-        {/* likes -> user id 로 filter! 0개 이상이면 누른거*/}
         <LikeButton
-          isLiked={tweet.likes.length > 0}
-          likeCount={tweet._count.likes}
+          isLiked={likeStatus.isLiked}
+          likeCount={likeStatus.likeCount}
           tweetId={tweet.id}
-          revalidateFn={revalidate}
         />
       </div>
       <div>
         <ResponseForm
           username={session.username}
           tweetId={tweet.id}
-          responses={tweet.responses}
-          revalidateFn={revalidate}
+          responses={responses}
         />
       </div>
     </div>
