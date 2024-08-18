@@ -23,12 +23,9 @@ export async function createTweet(_: any, formData: FormData) {
     tweet: formData.get("tweet"),
   };
   const result = formSchema.safeParse(data);
-  console.log(result);
   if (!result.success) {
     return result.error.flatten();
   } else {
-    console.log(result);
-
     await db.tweet.create({
       data: {
         tweet: result.data.tweet,

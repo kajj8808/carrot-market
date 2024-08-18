@@ -13,7 +13,7 @@ export default async function getTweets(page: number) {
       },
       _count: {
         select: {
-          Like: true,
+          likes: true,
         },
       },
     },

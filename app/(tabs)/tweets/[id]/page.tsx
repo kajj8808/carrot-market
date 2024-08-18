@@ -1,32 +1,13 @@
-import db from "@/lib/db";
-import { formatKorTime, formatToTimeAgo } from "@/lib/utils";
+import { formatKorTime } from "@/lib/utils";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { notFound } from "next/navigation";
+import { getTweet } from "./actions";
+import ResponseForm from "@/components/response-form";
+import getSession from "@/lib/sessions";
+import { unstable_cache as nextCache, revalidatePath } from "next/cache";
+import LikeButton from "@/components/like-button";
 
-async function getTweet(tweetId: number) {
-  const tweet = await db.tweet.findUnique({
-    where: {
-      id: tweetId,
-    },
-    include: {
-      user: {
-        select: {
-          id: true,
-          username: true,
-        },
-      },
-      _count: {
-        select: {
-          Like: true,
-        },
-      },
-    },
-  });
-  if (!tweet) {
-    return notFound();
-  }
-  return tweet;
-}
+const getCachedTweet = nextCache(getTweet, ["tweet-detail"]);
 
 export default async function TweetDetail({
   params,
@@ -37,8 +18,14 @@ export default async function TweetDetail({
   if (isNaN(id)) {
     return notFound();
   }
-  const tweet = await getTweet(id);
-  console.log(tweet);
+  // 더 좋은 생각나면 바꾸기
+  const session = await getSession();
+  const tweet = await getCachedTweet(id, session.id);
+
+  const revalidate = async (tweetId: number) => {
+    "use server";
+    revalidatePath(`/tweets/${tweetId}`);
+  };
   return (
     <div className="flex h-[83dvh] w-full flex-col gap-2 rounded-md border p-5">
       <div className="flex items-center gap-1">
@@ -48,15 +35,23 @@ export default async function TweetDetail({
       <p className="mt-4 text-neutral-600">
         {formatKorTime(tweet.created_at.toString())}
       </p>
-
       <div className="mt-4 flex border-b border-t py-4">
-        <div className="flex items-center gap-px *:text-neutral-600">
-          <div className="size-6">
-            <HeartIcon />
-          </div>
-        </div>
+        {/* likes -> user id 로 filter! 0개 이상이면 누른거*/}
+        <LikeButton
+          isLiked={tweet.likes.length > 0}
+          likeCount={tweet._count.likes}
+          tweetId={tweet.id}
+          revalidateFn={revalidate}
+        />
       </div>
-      <div></div>
+      <div>
+        <ResponseForm
+          username={session.username}
+          tweetId={tweet.id}
+          responses={tweet.responses}
+          revalidateFn={revalidate}
+        />
+      </div>
     </div>
   );
 }

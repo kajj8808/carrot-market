@@ -49,6 +49,7 @@ export default async function logIn(prevState: any, formData: FormData) {
       select: {
         id: true,
         password: true,
+        username: true,
       },
     });
     const ok = await bcrypt.compare(result.data.password, user?.password ?? "");
@@ -56,6 +57,7 @@ export default async function logIn(prevState: any, formData: FormData) {
     if (ok) {
       const session = await getSession();
       session.id = user?.id!;
+      session.username = user?.username!;
       await session.save();
       return redirect("/");
     } else {

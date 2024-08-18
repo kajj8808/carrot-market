@@ -33,3 +33,7 @@ export function formatKorTime(date: string) {
 
   return time;
 }
+
+export function sleep(second: number) {
+  return new Promise((resolve) => setTimeout(resolve, 1000 * second));
+}

@@ -73,7 +73,7 @@ export default function TweetList({
               <div className="size-4">
                 <HeartIcon />
               </div>
-              <p className="text-sm">{tweet._count.Like}</p>
+              <p className="text-sm">{tweet._count.likes}</p>
             </div>
           </Link>
         ))}
