@@ -24,6 +24,9 @@ export async function getTweetsByKeyword(_: any, formData: FormData) {
         tweet: {
           contains: result.data.keyword,
         },
+        user: {
+          username: result.data.keyword,
+        },
       },
       include: {
         user: {
