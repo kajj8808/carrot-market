@@ -37,3 +37,9 @@ export function formatKorTime(date: string) {
 export function sleep(second: number) {
   return new Promise((resolve) => setTimeout(resolve, 1000 * second));
 }
+
+/* import bcrypt from "bcrypt";
+export async function hashPassword(password: string) {
+  return bcrypt.hashSync(password, 5);
+}
+ */

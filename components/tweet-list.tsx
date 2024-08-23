@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import AddTweet from "./add-tweet";
 import LikeButton from "./like-button";
+import TweetItem from "./tweet-item";
 
 export default function TweetList({
   initialTweets,
@@ -57,28 +58,7 @@ export default function TweetList({
     <div className="flex w-full flex-col gap-2">
       <div className="flex h-[73dvh] flex-col gap-2 overflow-auto">
         {tweets.map((tweet) => (
-          <Link
-            href={`tweets/${tweet.id}`}
-            key={tweet.id}
-            className="flex flex-col gap-1 rounded-md border p-5"
-          >
-            <div className="flex items-center gap-1">
-              <p className="font-medium">{tweet.user.username}</p>
-              <p className="text-xs">·</p>
-              <p className="text-xs">
-                {formatToTimeAgo(tweet.created_at.toString())}
-              </p>
-            </div>
-            <span className="line-clamp-2 h-14 text-sm">{tweet.tweet}</span>
-
-            <LikeButton
-              isLiked={tweet.likes.length > 0}
-              likeCount={tweet._count.likes}
-              tweetId={tweet.id}
-              small
-              disabled
-            />
-          </Link>
+          <TweetItem tweet={tweet} key={tweet.id} />
         ))}
       </div>
       <div className="flex w-full items-center justify-center gap-2">

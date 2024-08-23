@@ -1,3 +1,4 @@
+"use client";
 import { useFormStatus } from "react-dom";
 import { VscLoading } from "react-icons/vsc";
 
