@@ -21,12 +21,18 @@ export async function getTweetsByKeyword(_: any, formData: FormData) {
     const session = await getSession();
     const containsTweets = await db.tweet.findMany({
       where: {
-        tweet: {
-          contains: result.data.keyword,
-        },
-        user: {
-          username: result.data.keyword,
-        },
+        OR: [
+          {
+            tweet: {
+              contains: result.data.keyword,
+            },
+          },
+          {
+            user: {
+              username: result.data.keyword,
+            },
+          },
+        ],
       },
       include: {
         user: {
