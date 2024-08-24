@@ -1,5 +1,5 @@
 "use client";
-import getTweets, { Tweets } from "@/app/(tabs)/actions";
+import getTweets, { Tweets } from "@/app/(tabs)/(home)/actions";
 import { TWEETS_PER_PAGE } from "@/lib/constants";
 import { formatToTimeAgo } from "@/lib/utils";
 import {
@@ -56,9 +56,17 @@ export default function TweetList({
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="flex h-[73dvh] flex-col gap-2 overflow-auto">
+      <div className="flex h-[80dvh] flex-col gap-2 overflow-auto">
         {tweets.map((tweet) => (
-          <TweetItem tweet={tweet} key={tweet.id} />
+          <TweetItem
+            created_at={tweet.created_at}
+            id={tweet.id}
+            isLiked={tweet.likes.length > 0}
+            likes={tweet._count.likes}
+            tweet={tweet.tweet}
+            username={tweet.user.username}
+            key={tweet.id}
+          />
         ))}
       </div>
       <div className="flex w-full items-center justify-center gap-2">

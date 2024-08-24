@@ -3,6 +3,7 @@ import TweetButton from "@/components/tweet-btn";
 import { useFormState } from "react-dom";
 import { getTweetsByKeyword } from "./actions";
 import TweetItem from "@/components/tweet-item";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 export default function Search() {
   const [state, action] = useFormState(getTweetsByKeyword, null);
@@ -10,12 +11,33 @@ export default function Search() {
   return (
     <div>
       <form action={action}>
-        <input type="text" name="search_keyword" placeholder="search" />
-        <TweetButton text="sarch" />
+        <div className="flex justify-between border-b pb-2">
+          <div className="flex items-center gap-2">
+            <label htmlFor="search_keyword">
+              <MagnifyingGlassIcon className="size-4 text-neutral-600" />
+            </label>
+
+            <input
+              type="text"
+              name="search_keyword"
+              id="search_keyword"
+              placeholder="검색"
+              className="outline-none"
+            />
+          </div>
+          <TweetButton text="sarch" />
+        </div>
         {state?.tweets.map((tweet) => (
-          <TweetItem tweet={tweet} key={tweet.id} />
+          <TweetItem
+            key={tweet.id}
+            id={tweet.id}
+            isLiked={tweet.likes.length > 0}
+            likes={tweet._count.likes}
+            tweet={tweet.tweet}
+            username={tweet.user.username}
+            created_at={tweet.created_at}
+          />
         ))}
-        {/* {state?.map()} */}
       </form>
     </div>
   );

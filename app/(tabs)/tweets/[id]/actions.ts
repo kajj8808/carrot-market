@@ -74,8 +74,6 @@ export async function getTweetResponses(tweetId: number) {
 export type TweetResponse = Prisma.PromiseReturnType<
   typeof getTweetResponses
 >[0];
-// type TweetResult = Prisma.PromiseReturnType<typeof getTweet>;
-// export type TweetResponse = TweetResult["responses"][0];
 
 export async function addResponse(tweetId: number, responseText: string) {
   const session = await getSession();
@@ -103,10 +101,10 @@ export async function likeTweet(tweetId: number) {
       },
     });
     revalidateTag("like-status");
+    revalidateTag(`user-${session.id}`);
   } catch (error) {}
 }
 export async function disLikeTweet(tweetId: number) {
-  // await sleep(3);
   const session = await getSession();
 
   try {
@@ -116,5 +114,6 @@ export async function disLikeTweet(tweetId: number) {
       },
     });
     revalidateTag("like-status");
+    revalidateTag(`user-${session.id}`);
   } catch (error) {}
 }

@@ -1,18 +1,41 @@
-# I'm optimistic.
+# Search & Profile & Deployment 🔥
 
-- 오늘의 강의: 캐럿마켓 클론코딩: From #14.0 to #14.5
-- 오늘의 과제: 위의 강의를 시청하신 후, 아래 퀴즈를 풀면 됩니다.
-- 제출기간: 월요일 오전 6시까지.
+- 오늘의 강의: 복습
+- 오늘의 과제: 위의 강의를 시청하신 후, 아래 코드 챌린지를 제출하면 됩니다.
+- 제출기간: 다음 월요일 오전 6시까지. 마지막 졸업작품 입니다 ;)
 
 ### 챌린지 목표:
 
 지난 섹션에서 생성한 같은 프로젝트를 활용하여 진행합니다:
 
-- /tweets/[id] 페이지에서 유저가 트윗에 답글을 추가할 수 있어야 하며 트윗에 좋아요 표시할 수 있어야 합니다.
-- 프리즈마에서 Response 모델을 만들고 서버 액션, Zod 유효성 검사, revalidatePath 및 useOptimistic을 사용합니다.
-- 좋아요와 트윗 답글은 useOptimistic 으로 처리해야 합니다.
+- Implement the /search page where users should be able to search for tweets by keyword.
+- Implement the /users/[username] page to display the profile of a user and the Tweets the user has posted.
+- If the user is the owner of the profile show a link to the /users/[username]/edit page.
+- In the edit profile page the user should be able to edit the username, email, bio and change password.
+- Use Zod, Server Actions, useOptimistic and revalidatePath.
+- Deploy to Vercel and Vercel Postgres after watching this section.
 
 ### 제출방법
 
-- 이 과제의 코드를 GitHub 리포지토리에 푸시하고 변경 사항이 포함된 커밋 링크를 제출하세요.
-- 제출기간: 월요일 오전 6시까지.
+- 제출하는 링크가 반드시 vercel.app 로 끝나야 정상 제출 됩니다!
+- 제출기간: 다음 월요일 오전 6시까지. 마지막 졸업작품 입니다!
+
+### 후기를 남겨주세요
+
+- 10주 스터디 어떠셨나요?
+- 여기까지 오신 여러분! 정말 고생하셨습니다. 자랑스럽습니다!
+- 아래 후기를 남겨주시면. 스터디를 운영해나가는데 큰 도움이 됩니다. 짧막하게나마 한마디라도 남겨주세요! 고맙습니다.
+
+### 개인적 목표
+
+- [x] 기간내에 챌린지 목표를 달성하자! ( 스파게티 코드.. )
+- [] 코드를 작성하다 보니 생긴 문제들을 메모해 보자.
+- [] 트위터 클론 코딩 챌린지를 next.js 버전으로 도전해 보자!
+- [] 챌린지 제출후 무한 스크롤을 구현해 보자.
+
+### 코드 작성시 생긴 문제들
+
+- 홀린듯이 이상한 코드를 작성하고 있다.. ( component에 prisma 에서 받은 값을 type으로 주고 있다.. 뭔일이지..)
+- 코드 정리가 안되고 있다.. 챌린지 끝난 다음날부터 리팩토링을 해보자. ( 코드를 홀린듯이 생각없이 짜놓은 부분 중 데이터를 받아오는 부분이 상당하다.. )
+- 중복되는 코드를 계속 작성하고 있다.. ( 마찬가지 리팩토링 )
+-

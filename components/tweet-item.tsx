@@ -3,44 +3,39 @@ import LikeButton from "./like-button";
 import { formatToTimeAgo } from "@/lib/utils";
 
 interface TweetItemProps {
-  tweet: {
-    id: number;
-    user: {
-      username: string;
-    };
-    created_at: Date;
-    tweet: string;
-    _count: {
-      likes: number;
-    };
-    likes: {
-      created_at: Date;
-      userId: number;
-      tweetId: number;
-    }[];
-  };
+  id: number;
+  username: string;
+  created_at: Date;
+  tweet: string;
+  likes: number;
+  isLiked: boolean;
 }
 
-export default function TweetItem({ tweet }: TweetItemProps) {
+export default function TweetItem({
+  id,
+  username,
+  created_at,
+  tweet,
+  isLiked,
+  likes,
+}: TweetItemProps) {
   return (
     <Link
-      href={`tweets/${tweet.id}`}
-      key={tweet.id}
-      className="flex flex-col gap-1 rounded-md border p-5"
+      href={`tweets/${id}`}
+      key={id}
+      className="flex flex-col gap-1 border-b py-2"
     >
       <div className="flex items-center gap-1">
-        <p className="font-medium">{tweet.user.username}</p>
+        <p className="font-medium">{username}</p>
         <p className="text-xs">·</p>
-        <p className="text-xs">
-          {formatToTimeAgo(tweet.created_at.toString())}
-        </p>
+        <p className="text-xs">{formatToTimeAgo(created_at.toString())}</p>
       </div>
-      <span className="line-clamp-2 h-14 text-sm">{tweet.tweet}</span>
+      <span className="line-clamp-2 h-14 text-sm">{tweet}</span>
 
       <LikeButton
-        isLiked={tweet.likes.length > 0}
-        likeCount={tweet._count.likes}
-        tweetId={tweet.id}
+        isLiked={isLiked}
+        likeCount={likes}
+        tweetId={id}
         small
         disabled
       />

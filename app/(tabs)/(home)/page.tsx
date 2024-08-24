@@ -3,13 +3,18 @@ import getTweets from "./actions";
 import MainLogo from "@/components/main-logo";
 import Link from "next/link";
 import AddTweet from "@/components/add-tweet";
+import { unstable_cache as nextCache } from "next/cache";
+import getSession from "@/lib/sessions";
+
+const getCachedTweets = nextCache(getTweets, ["initial_tweets"]);
 
 export default async function Home() {
-  const initialTweets = await getTweets(0);
+  const session = await getSession();
+  const initialTweets = await getCachedTweets(0, session.id);
+
   return (
     <div className="flex w-full flex-col gap-2">
       <AddTweet />
-
       <TweetList initialTweets={initialTweets} />
     </div>
   );

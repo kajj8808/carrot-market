@@ -2,6 +2,7 @@
 import db from "@/lib/db";
 import getSession from "@/lib/sessions";
 import { unstable_cache as nextCache } from "next/cache";
+import { notFound } from "next/navigation";
 
 async function getUser(username: string, userId: number) {
   const user = await db.user.findUnique({
@@ -32,6 +33,15 @@ async function getUser(username: string, userId: number) {
             },
           },
           tweet: true,
+          user: {
+            select: {
+              username: true,
+            },
+          },
+          created_at: true,
+        },
+        orderBy: {
+          created_at: "desc",
         },
       },
       bio: true,
@@ -42,8 +52,20 @@ async function getUser(username: string, userId: number) {
 }
 
 export async function getCachedUser(username: string) {
+  // 임시..
+  const user = await db.user.findUnique({
+    where: {
+      username,
+    },
+    select: {
+      id: true,
+    },
+  });
+  if (!user) {
+    return notFound();
+  }
   const cachedUser = nextCache(getUser, [`/users/${username}`], {
-    tags: [`user-${username}`],
+    tags: [`user-${user.id}`],
   });
   const session = await getSession();
   return await cachedUser(username, session.id);

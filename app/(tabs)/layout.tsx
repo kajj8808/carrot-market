@@ -1,4 +1,6 @@
 import MainLogo from "@/components/main-logo";
+import TabBar from "@/components/tab-bar";
+
 import Link from "next/link";
 import React from "react";
 
@@ -8,11 +10,13 @@ export default function HomeLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto flex h-dvh w-full max-w-xl flex-col items-center gap-5 p-5">
-      <Link href={"/"} className="py-2">
-        <MainLogo />
-      </Link>
-      {children}
+    <div className="mx-auto grid h-dvh w-full max-w-xl grid-cols-12 gap-5">
+      <div>
+        <TabBar />
+      </div>
+      <main className="col-span-10 h-dvh overflow-auto border-l border-r p-5">
+        {children}
+      </main>
     </div>
   );
 }

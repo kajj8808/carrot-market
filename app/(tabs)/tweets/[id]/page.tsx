@@ -6,6 +6,7 @@ import ResponseForm from "@/components/response-form";
 import getSession from "@/lib/sessions";
 import { unstable_cache as nextCache, revalidatePath } from "next/cache";
 import LikeButton from "@/components/like-button";
+import Link from "next/link";
 
 const getCachedTweet = nextCache(getTweet, ["tweet-detail"]);
 const getCachedTweetResponses = nextCache(getTweetResponses, [
@@ -30,9 +31,11 @@ export default async function TweetDetail({
   const responses = await getCachedTweetResponses(id);
   const likeStatus = await getCachedLikeStatus(id, session.id);
   return (
-    <div className="flex h-[93dvh] w-full flex-col gap-2 overflow-auto rounded-md border p-5">
+    <div className="flex w-full flex-col gap-2 overflow-auto">
       <div className="flex items-center gap-1">
-        <p className="font-medium">{tweet.user.username}</p>
+        <Link href={`/users/${tweet.user.username}`} className="font-medium">
+          {tweet.user.username}
+        </Link>
       </div>
       <span>{tweet.tweet}</span>
       <p className="mt-4 text-neutral-600">

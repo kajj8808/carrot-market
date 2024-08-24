@@ -1,11 +1,19 @@
 "use client";
-import { createTweet } from "@/app/(tabs)/tweets/add/action";
 import { useFormState } from "react-dom";
 import TweetInput from "./tweet-input";
 import TweetButton from "./tweet-btn";
+import { createTweet } from "@/app/(tabs)/(home)/actions";
+import { useEffect } from "react";
 
 export default function AddTweet() {
   const [state, action] = useFormState(createTweet, null);
+
+  useEffect(() => {
+    // 임시 방편..
+    if (state?.fieldErrors) {
+      window.location.reload();
+    }
+  }, [state]);
 
   return (
     <form

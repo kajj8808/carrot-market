@@ -1,13 +1,13 @@
 "use server";
-import db, { checkEmail, checkUsername } from "@/lib/db";
+import db from "@/lib/db";
 import getSession from "@/lib/sessions";
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
 import { PASSWORD_REGEX, PASSWORD_REGEX_ERROR } from "@/lib/constants";
 
 const editUserSchema = z.object({
-  username: z.string().toLowerCase().refine(checkUsername),
-  email: z.string().email().refine(checkEmail),
+  username: z.string().toLowerCase(),
+  email: z.string().email(),
   bio: z.string(),
 });
 
@@ -18,12 +18,56 @@ export async function editUser(formData: FormData) {
     email: formData.get("email"),
     bio: formData.get("bio"),
   };
-  const result = editUserSchema.safeParse(data);
+  const result = await editUserSchema.safeParseAsync(data);
   if (!result.success) {
     return result.error.flatten();
   } else {
     try {
-      const user = await db.user.update({
+      const user = await db.user.findUnique({
+        where: {
+          id: session.id,
+        },
+        select: {
+          username: true,
+          email: true,
+        },
+      });
+      // 값을 변경했는지 확인.
+      if (user?.email !== result.data.email) {
+        // 값을 변경했을 경우 중복된 값인지 확인.
+        const userEmail = await db.user.findUnique({
+          where: {
+            email: result.data.email,
+          },
+          select: { id: true },
+        });
+        if (userEmail) {
+          return {
+            error: {
+              email: "이미 존재하는 이메일 주소 입니다.",
+            },
+          };
+        }
+      }
+      if (user?.username !== result.data.username) {
+        const userName = await db.user.findUnique({
+          where: {
+            username: result.data.username,
+          },
+          select: {
+            id: true,
+          },
+        });
+        if (userName) {
+          return {
+            error: {
+              username: "이미 존재하는 이름 입니다.",
+            },
+          };
+        }
+      }
+
+      const updatedUser = await db.user.update({
         where: {
           id: session.id,
         },
@@ -33,10 +77,10 @@ export async function editUser(formData: FormData) {
           username: result.data.username,
         },
         select: {
-          username: true,
+          id: true,
         },
       });
-      revalidateTag(`user-${user.username}`);
+      revalidateTag(`user-${updatedUser.id}`);
     } catch (error) {}
   }
 }

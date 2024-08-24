@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache";
 import { startTransition, useMemo, useOptimistic } from "react";
 import { useForm } from "react-hook-form";
 import TweetButton from "./tweet-btn";
+import Link from "next/link";
 
 interface ResponseFormProps {
   tweetId: number;
@@ -26,6 +27,7 @@ export default function ResponseForm({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ResponseFromData>({
     resolver: zodResolver(responseFormSchema),
@@ -50,6 +52,7 @@ export default function ResponseForm({
     };
     reducer(newResponse);
     await addResponse(tweetId, data.text);
+    reset();
   };
 
   return (
@@ -76,7 +79,12 @@ export default function ResponseForm({
             className="flex flex-col border-b py-2.5 last:border-b-0"
           >
             <div className="flex items-center gap-1.5">
-              <h4 className="font-medium">{item.user.username} </h4>
+              <Link
+                href={`/users/${item.user.username}`}
+                className="font-medium"
+              >
+                {item.user.username}
+              </Link>
               <p>·</p>
               <h5 className="text-sm text-neutral-400">
                 {formatToTimeAgo(item.created_at.toString())}
