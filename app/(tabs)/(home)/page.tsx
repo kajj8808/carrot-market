@@ -15,7 +15,7 @@ export default async function Home() {
   return (
     <div className="flex w-full flex-col gap-2">
       <AddTweet />
-      <TweetList initialTweets={initialTweets} />
+      <TweetList initialTweets={initialTweets} userId={session.id} />
     </div>
   );
 }

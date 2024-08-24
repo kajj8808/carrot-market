@@ -15,8 +15,10 @@ import LikeButton from "./like-button";
 import TweetItem from "./tweet-item";
 
 export default function TweetList({
+  userId,
   initialTweets,
 }: {
+  userId: number;
   initialTweets: Tweets;
 }) {
   const [tweets, setTweets] = useState(initialTweets);
@@ -28,7 +30,7 @@ export default function TweetList({
     (async () => {
       setIsLoading(true);
       if (page >= 0) {
-        const tweets = await getTweets(page);
+        const tweets = await getTweets(page, userId);
         if (tweets.length !== TWEETS_PER_PAGE) {
           setIsLastPage(true);
         } else {
