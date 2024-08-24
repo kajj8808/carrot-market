@@ -1,6 +1,7 @@
 "use server";
 import db from "@/lib/db";
 import getSession from "@/lib/sessions";
+import { Prisma } from "@prisma/client";
 import { unstable_cache as nextCache } from "next/cache";
 import { notFound } from "next/navigation";
 
@@ -50,6 +51,10 @@ async function getUser(username: string, userId: number) {
   });
   return user;
 }
+
+export type UserTweets = NonNullable<
+  Awaited<ReturnType<typeof getUser>>
+>["tweets"];
 
 export async function getCachedUser(username: string) {
   // 임시..

@@ -5,6 +5,7 @@ import { formatToTimeAgo } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { getCachedUser } from "./actions";
 import Link from "next/link";
+import ProfileLayout from "@/components/profile-layout";
 
 export default async function Users({
   params,
@@ -13,7 +14,6 @@ export default async function Users({
 }) {
   const username = params.username;
   const user = await getCachedUser(username);
-  const session = await getSession();
 
   if (!username || !user) {
     return notFound();
@@ -21,15 +21,15 @@ export default async function Users({
 
   return (
     <div>
-      <h1>{user.username}</h1>
-      <h3>{user.bio}</h3>
-      <h3>{formatToTimeAgo(user.created_at.toString())} 가입</h3>
-      {session.id === user.id ? (
-        <Link href={`${user.username}/edit`}>edit</Link>
-      ) : null}
-      {user.tweets.map((tweet) => (
-        <div key={tweet.id}>{tweet.tweet}</div>
-      ))}
+      <ProfileLayout
+        userId={user.id}
+        key={""}
+        tweets={user.tweets}
+        username={user?.username}
+        email={user?.email}
+        created_at={user?.created_at}
+        bio={user?.bio || ""}
+      />
     </div>
   );
 }

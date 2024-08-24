@@ -21,7 +21,7 @@ export default function TweetItem({
 }: TweetItemProps) {
   return (
     <Link
-      href={`tweets/${id}`}
+      href={`/tweets/${id}`}
       key={id}
       className="flex flex-col gap-1 border-b py-2"
     >

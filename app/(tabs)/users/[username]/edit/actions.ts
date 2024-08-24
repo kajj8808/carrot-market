@@ -81,11 +81,13 @@ export async function editUser(formData: FormData) {
         },
       });
       revalidateTag(`user-${updatedUser.id}`);
+      redirect("/profile");
     } catch (error) {}
   }
 }
 import bcrypt from "bcrypt";
 import { hashPassword } from "@/lib/server/utils";
+import { redirect } from "next/navigation";
 async function checkPassword(password: string) {
   const session = await getSession();
   const user = await db.user.findUnique({
@@ -128,5 +130,6 @@ export async function editPassword(formData: FormData) {
         password: hashedNewpassword,
       },
     });
+    redirect("/profile");
   }
 }
