@@ -40,7 +40,7 @@ export default function TweetList({
       }
       setIsLoading(false);
     })();
-  }, [page]);
+  }, [page, userId]);
   const nextPage = () => {
     if (page >= 0) {
       setPage((prev) => prev! + 1);
