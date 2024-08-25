@@ -16,7 +16,7 @@ export default function EditProfileForm({
 
   useEffect(() => {
     if (state?.ok) {
-      window.location.href = "/log-in";
+      window.location.href = "/profile";
     }
   }, [state]);
 

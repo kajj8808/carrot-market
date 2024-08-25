@@ -2,9 +2,16 @@
 import { useFormState } from "react-dom";
 import EditButton from "./edit-button";
 import { editPassword } from "@/app/(tabs)/users/[username]/edit/actions";
+import { useEffect } from "react";
 
 export default function EditPasswordForm() {
   const [state, trigger] = useFormState(editPassword, null);
+
+  useEffect(() => {
+    if (state?.ok) {
+      window.location.href = "/log-in";
+    }
+  }, [state]);
 
   return (
     <form action={trigger} className="flex flex-col gap-3 pb-3">

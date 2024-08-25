@@ -126,7 +126,10 @@ export async function editPassword(_: any, formData: FormData) {
   const result = await editPasswordSchema.safeParseAsync(data);
   console.log(result.error?.flatten());
   if (!result.success) {
-    return result.error.flatten();
+    return {
+      errors: result.error.flatten(),
+      ok: false,
+    };
   } else {
     const session = await getSession();
     const hashedNewpassword = await hashPassword(result.data.newPassword);
@@ -139,6 +142,8 @@ export async function editPassword(_: any, formData: FormData) {
         password: hashedNewpassword,
       },
     });
-    redirect("/profile");
+    return {
+      ok: true,
+    };
   }
 }
