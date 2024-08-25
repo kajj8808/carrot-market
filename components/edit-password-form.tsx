@@ -25,6 +25,9 @@ export default function EditPasswordForm() {
           placeholder="old_password"
           className="rounded-md border p-2.5 outline-none"
         />
+        <span className="text-sm text-red-500">
+          {state?.errors?.fieldErrors.oldPassword}
+        </span>
       </div>
       <div className="flex flex-col gap-px">
         <label htmlFor="new_password">새로운 비밀번호</label>
@@ -35,6 +38,9 @@ export default function EditPasswordForm() {
           placeholder="new_password"
           className="rounded-md border p-2.5 outline-none"
         />
+        <span className="text-sm text-red-500">
+          {state?.errors?.fieldErrors.newPassword}
+        </span>
       </div>
       <EditButton text="비밀번호 저장하기" />
     </form>

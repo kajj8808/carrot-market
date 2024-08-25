@@ -33,6 +33,9 @@ export default function EditProfileForm({
           defaultValue={username}
           className="rounded-md border p-2.5 outline-none"
         />
+        <span className="text-sm text-red-500">
+          {state?.errors?.fieldErrors.username}
+        </span>
       </div>
 
       <div className="flex flex-col gap-px">
@@ -45,6 +48,9 @@ export default function EditProfileForm({
           defaultValue={email}
           className="rounded-md border p-2.5 outline-none"
         />
+        <span className="text-sm text-red-500">
+          {state?.errors?.fieldErrors.email}
+        </span>
       </div>
       <div className="flex flex-col gap-px">
         <label htmlFor="bio">자기소개</label>
@@ -56,6 +62,9 @@ export default function EditProfileForm({
           defaultValue={bio || ""}
           className="rounded-md border p-2.5 outline-none"
         />
+        <span className="text-sm text-red-500">
+          {state?.errors?.fieldErrors.bio}
+        </span>
       </div>
       <EditButton text="저장하기" />
     </form>
