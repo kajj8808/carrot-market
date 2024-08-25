@@ -11,7 +11,7 @@ const editUserSchema = z.object({
   bio: z.string(),
 });
 
-export async function editUser(formData: FormData) {
+export async function editUser(_: any, formData: FormData) {
   const session = await getSession();
   const data = {
     username: formData.get("username"),
@@ -20,7 +20,10 @@ export async function editUser(formData: FormData) {
   };
   const result = await editUserSchema.safeParseAsync(data);
   if (!result.success) {
-    return result.error.flatten();
+    return {
+      ok: false,
+      errors: result.error.flatten(),
+    };
   } else {
     try {
       const user = await db.user.findUnique({
@@ -81,8 +84,14 @@ export async function editUser(formData: FormData) {
         },
       });
       revalidateTag(`user-${updatedUser.id}`);
-      redirect("/profile");
-    } catch (error) {}
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+      };
+    }
   }
 }
 import bcrypt from "bcrypt";
@@ -109,7 +118,7 @@ const editPasswordSchema = z.object({
     .refine(checkPassword),
   newPassword: z.string().regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
 });
-export async function editPassword(formData: FormData) {
+export async function editPassword(_: any, formData: FormData) {
   const data = {
     oldPassword: formData.get("old_password"),
     newPassword: formData.get("new_password"),
