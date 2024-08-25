@@ -6,7 +6,9 @@ import AddTweet from "@/components/add-tweet";
 import { unstable_cache as nextCache } from "next/cache";
 import getSession from "@/lib/sessions";
 
-const getCachedTweets = nextCache(getTweets, ["initial_tweets", "like-status"]);
+const getCachedTweets = nextCache(getTweets, ["initial_tweets"], {
+  tags: ["like-status"],
+});
 
 export default async function Home() {
   const session = await getSession();
